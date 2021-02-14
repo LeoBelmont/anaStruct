@@ -124,11 +124,13 @@ def plot_values_axial_force(element, factor):
         x = interpolate * element.l
         if element.q_direction == "x":
             n_part = -(
-                -(N1*element.l + x*(2*element.l*qi - x*(q + qi))/2)/element.l
+                -(N1 * element.l + x * (2 * element.l * qi - x * (q + qi)) / 2)
+                / element.l
             )
         elif element.q_direction == "y":
             n_part = -(
-                -(N1*element.l + x*(2*element.l*qi + x*(q - qi))/2)/element.l
+                -(N1 * element.l + x * (2 * element.l * qi + x * (q - qi)) / 2)
+                / element.l
             )
         x_val += sin * n_part * factor
         y_val += cos * n_part * factor

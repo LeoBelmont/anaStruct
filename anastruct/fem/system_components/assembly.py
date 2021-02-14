@@ -147,29 +147,31 @@ def apply_parallel_q_load(system: "SystemElements", element: "Element"):
             else:
                 qi = q = q_element
 
-            if q== 0 and qi == 0:
-                cg = .5
+            if q == 0 and qi == 0:
+                cg = 0.5
             else:
                 cg = (element.l / 3) * ((qi + 2 * q) / (qi + q))
 
             eq = ((q + qi) * element.l) / 2
 
-            Fx_left = -eq * math.cos(element.angle) * (element.l-cg) / element.l
+            Fx_left = -eq * math.cos(element.angle) * (element.l - cg) / element.l
 
             Fx_right = -eq * math.cos(element.angle) * cg / element.l
 
             Fz_left = (
-                    eq
-                    * abs(math.sin(element.angle))
-                    * (element.l-cg) / element.l
-                    * np.sign(math.sin(element.angle))
+                eq
+                * abs(math.sin(element.angle))
+                * (element.l - cg)
+                / element.l
+                * np.sign(math.sin(element.angle))
             )
 
             Fz_right = (
-                    eq
-                    * abs(math.sin(element.angle))
-                    * cg / element.l
-                    * np.sign(math.sin(element.angle))
+                eq
+                * abs(math.sin(element.angle))
+                * cg
+                / element.l
+                * np.sign(math.sin(element.angle))
             )
 
             update(Fx_left, Fx_right, Fz_left, Fz_right)
@@ -188,29 +190,31 @@ def apply_parallel_q_load(system: "SystemElements", element: "Element"):
                 q = q_element[1]
             else:
                 qi = q = q_element
-            
-            if q== 0 and qi == 0:
-                cg = .5
+
+            if q == 0 and qi == 0:
+                cg = 0.5
             else:
                 cg = (element.l / 3) * ((qi + 2 * q) / (qi + q))
 
             eq = ((q + qi) * element.l) / 2
-            
+
             Fx_left = (
-                    eq
-                    * math.cos(element.angle)
-                    * (element.l-cg) / element.l
-                    * -np.sign(math.sin(element.angle))
+                eq
+                * math.cos(element.angle)
+                * (element.l - cg)
+                / element.l
+                * -np.sign(math.sin(element.angle))
             )
 
             Fx_right = (
-                    eq
-                    * math.cos(element.angle)
-                    * cg / element.l
-                    * -np.sign(math.sin(element.angle))
+                eq
+                * math.cos(element.angle)
+                * cg
+                / element.l
+                * -np.sign(math.sin(element.angle))
             )
 
-            Fz_left = eq * abs(math.sin(element.angle)) * (element.l-cg) / element.l
+            Fz_left = eq * abs(math.sin(element.angle)) * (element.l - cg) / element.l
 
             Fz_right = eq * abs(math.sin(element.angle)) * cg / element.l
 
