@@ -94,13 +94,50 @@ def plot_values_axial_force(element, factor):
     N1 = element.N_1
     N2 = element.N_2
 
+    sin = math.sin(-element.angle)
+    cos = math.cos(-element.angle)
+
     x_1 = x1 + N1 * math.cos(0.5 * math.pi + element.angle) * factor
     y_1 = y1 + N1 * math.sin(0.5 * math.pi + element.angle) * factor
     x_2 = x2 + N2 * math.cos(0.5 * math.pi + element.angle) * factor
     y_2 = y2 + N2 * math.sin(0.5 * math.pi + element.angle) * factor
 
-    x_val = [x1, x_1, x_2, x2]
-    y_val = [y1, y_1, y_2, y2]
+    interpolate = np.linspace(0, 1, 10)
+    dx = x_2 - x_1
+    dy = y_2 - y_1
+
+    # determine moment for 0 < x < length of the element
+    x_val = x_1 + interpolate * dx
+    y_val = y_1 + interpolate * dy
+
+    if element.q_direction == "y":
+        q_factor = -sin
+    elif element.q_direction == "x":
+        q_factor = cos
+    elif element.q_direction == "element" or element.q_direction is None:
+        q_factor = 0
+
+    qi = element.q_load[0] * q_factor
+    q = element.q_load[1] * q_factor
+
+    if qi or q:
+        x = interpolate * element.l
+        if element.q_direction == "x":
+            n_part = -(
+                -(N1*element.l + x*(2*element.l*qi - x*(q + qi))/2)/element.l
+            )
+        elif element.q_direction == "y":
+            n_part = -(
+                -(N1*element.l + x*(2*element.l*qi + x*(q - qi))/2)/element.l
+            )
+        x_val += sin * n_part * factor
+        y_val += cos * n_part * factor
+
+    x_val = np.append(x_val, element.vertex_2.x)
+    y_val = np.append(y_val, -element.vertex_2.z)
+    x_val = np.insert(x_val, 0, element.vertex_1.x)
+    y_val = np.insert(y_val, 0, -element.vertex_1.z)
+
     return x_val, y_val
 
 

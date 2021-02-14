@@ -599,41 +599,48 @@ class Plotter(PlottingValues):
                     color=color,
                 )
 
-                point = (el.vertex_2 - el.vertex_1) / 2 + el.vertex_1
-                if el.N_1 < 0:
-                    point.displace_polar(
-                        alpha=el.angle + 0.5 * np.pi,
-                        radius=0.5 * el.N_1 * factor,
-                        inverse_z_axis=True,
-                    )
-
-                    if verbosity == 0:
-                        self.one_fig.text(
-                            point.x,
-                            point.y,
-                            "-",
-                            ha="center",
-                            va="center",
-                            fontsize=20,
-                            color="b",
-                        )
-                if el.N_1 > 0:
-                    point.displace_polar(
-                        alpha=el.angle + 0.5 * np.pi,
-                        radius=0.5 * el.N_1 * factor,
-                        inverse_z_axis=True,
-                    )
-
-                    if verbosity == 0:
-                        self.one_fig.text(
-                            point.x,
-                            point.y,
-                            "+",
-                            ha="center",
-                            va="center",
-                            fontsize=14,
-                            color="b",
-                        )
+                # commented this out as it no longer works since normal stress is no longer necessarily a linear function
+                # length = ((el.vertex_2.x - el.vertex_1.x)**2 + (el.vertex_2.y - el.vertex_1.y)**2)**.5
+                # iteration_factor = np.linspace(0, 1, len(axis_values[1]))
+                # x = iteration_factor * length
+                # equation = np.polyfit(x, axis_values[1], 3)
+                # mid_value = (equation[0] + equation[-1]) / 2
+                #
+                # point = (el.vertex_2 - el.vertex_1) / 2 + el.vertex_1
+                # if mid_value < 0:
+                #     point.displace_polar(
+                #         alpha=el.angle + 0.5 * np.pi,
+                #         radius=0.5 * el.N_1 * factor,
+                #         inverse_z_axis=True,
+                #     )
+                #
+                #     if verbosity == 0:
+                #         self.one_fig.text(
+                #             point.x,
+                #             point.y,
+                #             "-",
+                #             ha="center",
+                #             va="center",
+                #             fontsize=20,
+                #             color="b",
+                #         )
+                # if mid_value > 0:
+                #     point.displace_polar(
+                #         alpha=el.angle + 0.5 * np.pi,
+                #         radius=0.5 * el.N_1 * factor,
+                #         inverse_z_axis=True,
+                #     )
+                #
+                #     if verbosity == 0:
+                #         self.one_fig.text(
+                #             point.x,
+                #             point.y,
+                #             "+",
+                #             ha="center",
+                #             va="center",
+                #             fontsize=14,
+                #             color="b",
+                #         )
 
         if show:
             self.plot()
